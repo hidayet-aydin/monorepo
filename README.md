@@ -101,12 +101,12 @@ LedgerOperation = BaseLedgerOperation("TypeOperations", SHARED_OPERATION_VALUES)
 
 A new application has been added under the "monorepo" directory. This application utilizes the `LedgerOperation` class to perform operations.
 
-```bash
-mkdir app
-cd app
-mkdir db
-cd db
-touch schemas.py
+```
+| - app
+|   | - db
+|   |   | - init.py
+|   |   | - models.py
+|   |   | - schemas.py
 ```
 
 New application schemas uses basically the `LedgerOperation` class to perform operations. It also includes a new schema for database operations.
@@ -124,10 +124,79 @@ OPERATION_VALUES = {**APP_OPERATION_VALUES, **SHARED_OPERATION_VALUES}
 LedgerOperation = BaseLedgerOperation("TypeOperations", OPERATION_VALUES)
 ```
 
-### Postgres Installation
+### Database Installation
 
 Using Docker to install PostgreSQL:
 
 ```bash
 docker run --name postgres -p 5432:5432 -e POSTGRES_PASSWORD=12345 -e POSTGRES_USER=admin -d postgres:16-bullseye
+```
+
+### Alembic Configuration
+
+Alembic library is used to manage database migrations. It can be create a new database and apply future migrations.
+
+Creating a new Alembic migration directory:
+
+```bash
+cd app
+alembic init migrations
+```
+
+New directory structure for migrations:
+
+```
+| - app
+|   | - db
+|   | - migrations
+|   |   | - versions
+|   |   | - env.py
+|   |   | - README
+|   |   | - script.py.mako
+|   | - alembic.ini
+```
+
+It must be configured with the correct database URL.
+
+`app/alembic.ini`
+
+```
+sqlalchemy.url = postgresql://admin:12345@localhost:5432/postgres
+```
+
+Database models are defined in:
+
+`app/migrations/env.py`
+
+```python
+from db.models import Base
+
+target_metadata = Base.metadata
+```
+
+Next, it can be created an initial migration and apply it to the database:
+
+```bash
+alembic revision --autogenerate -m "initial migration"
+alembic upgrade head
+```
+
+Initial migration script is generated in versions directory. But, it is not applied to the database yet.
+
+```
+| - app
+|   | - db
+|   | - migrations
+|   |   | - versions
+|   |   |   | - af9a23125b82_initial_migration.py
+|   |   | - env.py
+|   |   | - README
+|   |   | - script.py.mako
+|   | - alembic.ini
+```
+
+To apply the migration to the database, run:
+
+```bash
+alembic upgrade head
 ```
