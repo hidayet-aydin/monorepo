@@ -1,0 +1,16 @@
+import sys
+sys.path = ['', '..'] + sys.path[1:]
+
+from core.ledgers.schemas import BaseLedgerOperation, SHARED_OPERATION_VALUES, SHARED_OPERATION_CONFIG
+
+APP_OPERATION_CONFIG = {
+}
+
+LEDGER_OPERATION_CONFIG = {**APP_OPERATION_CONFIG, **SHARED_OPERATION_CONFIG}
+
+APP_OPERATION_VALUES = {
+}
+
+OPERATION_VALUES = {**APP_OPERATION_VALUES, **SHARED_OPERATION_VALUES}
+
+LedgerOperation = BaseLedgerOperation("TypeOperations", OPERATION_VALUES)

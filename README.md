@@ -17,7 +17,7 @@ This monorepo leverages a code reusability architecture, allowing core functions
 
 Installing Python with pyenv allows you to manage multiple Python versions easily.
 
-Update Homebrew and install ncurses and pyenv:
+Update Homebrew, install ncurses and pyenv:
 
 ```bash
 brew update
@@ -58,14 +58,6 @@ pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-### Postgres Installation
-
-Using Docker to install PostgreSQL:
-
-```bash
-docker run --name postgres -p 5432:5432 -e POSTGRES_PASSWORD=12345 -e POSTGRES_USER=admin -d postgres:16-bullseye
-```
-
 ## Implementation Steps
 
 ### Core Functionality
@@ -103,4 +95,39 @@ Any application can now use the `LedgerOperation` class to perform operations wi
 
 ```python
 LedgerOperation = BaseLedgerOperation("TypeOperations", SHARED_OPERATION_VALUES)
+```
+
+### New Application Under "monorepo"
+
+A new application has been added under the "monorepo" directory. This application utilizes the `LedgerOperation` class to perform operations.
+
+```bash
+mkdir app
+cd app
+mkdir db
+cd db
+touch schemas.py
+```
+
+New application schemas uses basically the `LedgerOperation` class to perform operations. It also includes a new schema for database operations.
+
+`monorepo/app/db/schemas.py`
+
+```python
+from core.ledgers.schemas import BaseLedgerOperation, SHARED_OPERATION_VALUES
+
+APP_OPERATION_VALUES = {
+}
+
+OPERATION_VALUES = {**APP_OPERATION_VALUES, **SHARED_OPERATION_VALUES}
+
+LedgerOperation = BaseLedgerOperation("TypeOperations", OPERATION_VALUES)
+```
+
+### Postgres Installation
+
+Using Docker to install PostgreSQL:
+
+```bash
+docker run --name postgres -p 5432:5432 -e POSTGRES_PASSWORD=12345 -e POSTGRES_USER=admin -d postgres:16-bullseye
 ```
