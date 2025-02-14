@@ -1,0 +1,15 @@
+# folders
+.venv
+.vscode
+
+# Byte-compiled
+**/__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Distribution / packaging
+.Python
+build/
+dist/
+*.egg-info/
+
