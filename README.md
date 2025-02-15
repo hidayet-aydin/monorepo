@@ -273,3 +273,60 @@ Finally, we can verify the changes.
 **After Migration For New Application**
 
 ![Initial Migration](documents/pictures/new_features.png)
+
+### API Development
+
+Database connection is established using SQLAlchemy's `create_engine()` method. The connection string includes the database name, user, password, and host. Database secrets are stored in a `.env` file and loaded using the `python-dotenv` library.
+
+```
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=postgres
+DB_USER=admin
+DB_PASSWORD=12345
+```
+
+#### API Authentication
+
+API authentication is handled using a token-based approach. The `x-token` header must be included in all API requests with the `secret-token`.
+
+### Running the Application
+
+```bash
+uvicorn --reload main:app
+```
+
+#### Endpoints
+
+Getting user credit info:
+
+```bash
+curl --location 'http://localhost:8000/ledger/user1' \
+--header 'x-token: secret-token'
+```
+
+New user receiving credit:
+
+```bash
+curl --location 'http://localhost:8000/ledger' \
+--header 'x-token: secret-token' \
+--header 'Content-Type: application/json' \
+--data '{
+    "operation": "SIGNUP_CREDIT",
+    "owner_id": "user1",
+    "nonce": "2025-02-13T21:07:11.064Z"
+} '
+```
+
+Spend credit:
+
+```bash
+curl --location 'http://localhost:8000/ledger' \
+--header 'x-token: secret-token' \
+--header 'Content-Type: application/json' \
+--data '{
+    "operation": "CREDIT_SPEND",
+    "owner_id": "user1",
+    "nonce": "2025-02-14T23:57:15.516Z"
+} '
+```
