@@ -2,10 +2,11 @@
 .venv
 .vscode
 
-# Byte-compiled
+# Temporary files
 **/__pycache__/
 *.py[cod]
 .pytest_cache/
+**/.DS_Store**
 
 # Distribution / packaging
 .Python
