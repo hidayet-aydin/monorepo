@@ -1,6 +1,7 @@
 # folders
 .venv
 .vscode
+others
 
 # Temporary files
 **/__pycache__/

@@ -178,7 +178,6 @@ Next, it can be created an initial migration and apply it to the database:
 
 ```bash
 alembic revision --autogenerate -m "initial migration"
-alembic upgrade head
 ```
 
 Initial migration script is generated in versions directory. But, it is not applied to the database yet.
